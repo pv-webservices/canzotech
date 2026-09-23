@@ -1,0 +1,30 @@
+# CanzoTech launch checklist
+
+The site is complete and publishable as-is. The items below swap generated/neutral content for verified
+CanzoTech material, and each one is a small edit in `lib/`.
+
+## Content to supply
+
+1. **Contact details** — set `company.phone` and `company.location` in `lib/site-data.ts`.
+   Both are hidden everywhere until filled, so nothing breaks while they are empty.
+2. **Client logos** — the logo rail shows the technology stack (`lib/tech-logos.ts`), standing in for a client
+   logo row. Only publish real client marks with written permission.
+3. **Testimonials** — the "What working with us actually looks like" list uses `commitments`. Replace it with
+   approved client quotes (name, role, company) when available.
+4. **Business statistics** — `stats` describes the delivery model. Swap in verified numbers
+   (projects delivered, clients, years, retention) once CanzoTech can substantiate them.
+5. **Case studies** — `lib/solutions.ts` holds labelled *solution blueprints* with concept visuals.
+   Replace with real projects, client-approved screenshots and verified outcomes when ready.
+6. **Careers** — add active roles to `jobs` in `lib/site-data.ts`; until then the page shows an open-application card.
+7. **Team / office photos** — the black-and-white imagery is generated. Swap in real photography, kept monochrome,
+   when available.
+8. **Legal pages** — `/privacy-policy` and `/terms` are written as a reasonable baseline; have them reviewed by
+   a lawyer for the correct jurisdiction and business model.
+9. **Domain** — replace `https://www.canzotech.com` in `app/layout.tsx`, `app/sitemap.ts` and `app/robots.ts`
+    if the production domain differs.
+
+## Before going live
+
+- Connect `/api/contact` to the approved email provider or CRM, and add rate limiting / bot protection.
+- Confirm the imagery on Our Work is understood as illustrative; `/terms` already states this.
+- Re-run `npm run build` and check `/sitemap.xml`.
