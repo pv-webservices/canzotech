@@ -194,6 +194,23 @@ export const services: Service[] = [
     ],
   },
   {
+    slug: 'cyber-security',
+    name: 'Cyber Security Services',
+    shortName: 'Cyber Security',
+    icon: 'shield',
+    description:
+      'Security assessments, hardening and secure engineering practices that protect applications, data and infrastructure.',
+    intro:
+      'We help businesses find and fix security weaknesses across applications, cloud environments and delivery pipelines, and build security into how software is designed and released.',
+    challenges: ['Unknown vulnerabilities in live applications', 'Misconfigured cloud and access permissions', 'Sensitive data without clear protection', 'Security checks left until just before release'],
+    capabilities: ['Security assessment and threat modelling', 'Vulnerability assessment and penetration testing', 'Secure code review', 'Cloud and infrastructure hardening', 'Identity and access management', 'DevSecOps and security monitoring'],
+    stack: ['OWASP ASVS / Top 10', 'Burp Suite', 'OWASP ZAP', 'SAST / DAST tooling', 'Dependency scanning', 'Cloud security controls', 'SIEM / logging platforms'],
+    faqs: [
+      { question: 'Can you test an application that is already live?', answer: 'Yes. Assessments are scoped and scheduled with you in advance, and testing on production can be limited or moved to a staging environment to avoid disruption.' },
+      { question: 'Do you help fix the issues you find?', answer: 'Yes. Findings come with prioritised, practical remediation guidance, and our engineers can implement and verify the fixes if you want us to.' },
+    ],
+  },
+  {
     slug: 'technology-consulting',
     name: 'Technology Consulting',
     shortName: 'Consulting',
@@ -214,7 +231,7 @@ export const services: Service[] = [
 
 // Delivery-model facts (not client counts). Swap in verified business metrics when available.
 export const stats = [
-  { value: 8, suffix: '', label: 'Core service capabilities' },
+  { value: 9, suffix: '', label: 'Core service capabilities' },
   { value: 4, suffix: '', label: 'Phase delivery framework' },
   { value: 100, suffix: '%', label: 'Code & IP ownership for clients' },
   { value: 2, suffix: ' wk', label: 'Sprint cadence with live demos' },

@@ -68,7 +68,7 @@ top for desktop. (It replaced an earlier scroll-pinned implementation that did n
 
 ## Routes
 
-`/`, `/about`, `/services` + 8 service pages, `/work` + 4 project pages, `/careers`, `/contact`,
+`/`, `/about`, `/services` + 9 service pages, `/work` + 4 project pages, `/careers`, `/contact`,
 `/privacy-policy`, `/terms`, plus `sitemap.xml` and `robots.txt`. There is no blog.
 
 Editable content lives in `lib/site-data.ts` (company, navigation, services, stats, tech stack, commitments,

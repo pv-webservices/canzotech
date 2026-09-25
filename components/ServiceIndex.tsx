@@ -14,6 +14,7 @@ const previews: Record<string, string> = {
   'cloud-devops': '/images/hero-bw.webp',
   'ui-ux-design': '/images/designer-whiteboard.webp',
   'qa-testing': '/images/case-health.webp',
+  'cyber-security': '/images/hero-studio.webp',
   'technology-consulting': '/images/team-bw.webp',
 };
 
