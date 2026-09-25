@@ -167,6 +167,13 @@
 }
 .contact-form input:focus, .contact-form select:focus, .contact-form textarea:focus { outline: none; border-color: var(--g-blue); }
 .contact-form textarea { resize: vertical; }
+.phone-field { display: grid; gap: 9px; align-content: start; }
+.phone-row { display: grid; grid-template-columns: auto 1fr; align-items: end; gap: 14px; }
+.phone-code { position: relative; }
+.phone-code-value { display: flex; align-items: center; gap: 6px; padding: 13px 2px; border-bottom: 1px solid var(--rule-strong); font-family: var(--font-mono), monospace; font-size: 14px; line-height: 1.4; color: var(--ink); white-space: nowrap; transition: border-color 0.35s var(--ease); }
+.phone-code-value svg { color: var(--on-paper-muted); }
+.contact-form .phone-code select { position: absolute; inset: 0; padding: 0; border: 0; opacity: 0; cursor: pointer; }
+.phone-code:focus-within .phone-code-value { border-color: var(--g-blue); }
 .submit-button { justify-content: space-between; width: 100%; margin-top: 6px; }
 .submit-button:disabled { opacity: 0.55; cursor: progress; }
 .honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }

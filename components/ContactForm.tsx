@@ -3,8 +3,10 @@
 import { FormEvent, useState } from 'react';
 import { Icon } from './Icon';
 import { services } from '@/lib/site-data';
+import { type Enquiry, sendEnquiry, validateEnquiry } from '@/lib/enquiry';
+import { countryCodes, DEFAULT_COUNTRY_ISO, findCountry } from '@/lib/country-codes';
 
-const initial = { name: '', email: '', phone: '', company: '', service: '', budget: '', details: '', website: '' };
+const initial: Enquiry = { name: '', email: '', countryCode: DEFAULT_COUNTRY_ISO, phone: '', company: '', service: '', budget: '', details: '', website: '' };
 
 export function ContactForm() {
   const [form, setForm] = useState(initial);
@@ -15,14 +17,14 @@ export function ContactForm() {
     event.preventDefault();
     setStatus('loading');
     setMessage('');
+    const invalid = validateEnquiry(form);
+    if (invalid) {
+      setStatus('error');
+      setMessage(invalid);
+      return;
+    }
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'Unable to submit your enquiry.');
+      await sendEnquiry(form);
       setStatus('success');
       setMessage('Thanks — your enquiry has been received. We will get back to you shortly.');
       setForm(initial);
@@ -59,10 +61,37 @@ export function ContactForm() {
           <span className="field-label">Business Email <em>*</em></span>
           <input required type="email" autoComplete="email" value={form.email} onChange={(event) => update('email', event.target.value)} />
         </label>
-        <label>
-          <span className="field-label">Phone</span>
-          <input inputMode="tel" autoComplete="tel" value={form.phone} onChange={(event) => update('phone', event.target.value)} />
-        </label>
+        <div className="phone-field">
+          <label className="field-label" htmlFor="enquiry-phone">Phone</label>
+          <div className="phone-row">
+            {/* The native select stays on top (transparent) so it keeps full keyboard and mobile picker support. */}
+            <div className="phone-code">
+              <span className="phone-code-value" aria-hidden="true">
+                {form.countryCode} {findCountry(form.countryCode).dial}
+                <Icon name="chevronDown" size={14} />
+              </span>
+              <select
+                aria-label="Country code"
+                value={form.countryCode}
+                onChange={(event) => update('countryCode', event.target.value)}
+              >
+                {countryCodes.map((country) => (
+                  <option key={country.iso} value={country.iso}>
+                    {country.name} ({country.dial})
+                  </option>
+                ))}
+              </select>
+            </div>
+            <input
+              id="enquiry-phone"
+              type="tel"
+              inputMode="tel"
+              autoComplete="tel-national"
+              value={form.phone}
+              onChange={(event) => update('phone', event.target.value)}
+            />
+          </div>
+        </div>
         <label>
           <span className="field-label">Company</span>
           <input autoComplete="organization" value={form.company} onChange={(event) => update('company', event.target.value)} />

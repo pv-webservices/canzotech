@@ -98,5 +98,6 @@ See `CONTENT_CHECKLIST.md` for what to swap in before launch.
 
 ## Contact form
 
-`app/api/contact/route.ts` validates input server-side (including a honeypot) and returns success. Connect it
-to the client's email provider or CRM and add rate limiting / bot protection before production.
+`components/ContactForm.tsx` validates the enquiry (including a honeypot) and `lib/enquiry.ts` sends it through
+[FormSubmit](https://formsubmit.co)'s AJAX endpoint to `company.email` (`canzotech@gmail.com`). The very first
+submission sends an "Activate Form" email to that inbox; enquiries are only delivered once the link is clicked.

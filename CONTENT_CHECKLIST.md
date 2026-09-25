@@ -25,6 +25,6 @@ CanzoTech material, and each one is a small edit in `lib/`.
 
 ## Before going live
 
-- Connect `/api/contact` to the approved email provider or CRM, and add rate limiting / bot protection.
+- Activate FormSubmit: submit the contact form once from the live site, then click "Activate Form" in the email sent to canzotech@gmail.com.
 - Confirm the imagery on Our Work is understood as illustrative; `/terms` already states this.
 - Re-run `npm run build` and check `/sitemap.xml`.
