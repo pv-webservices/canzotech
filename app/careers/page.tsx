@@ -4,12 +4,14 @@ import { Action } from '@/components/Action';
 import { CtaBand } from '@/components/CtaBand';
 import { PageIntro } from '@/components/PageIntro';
 import { company, jobs } from '@/lib/site-data';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Careers',
-  description: 'Career opportunities and how hiring works at CanzoTech.',
-  alternates: { canonical: '/careers' },
-};
+export const metadata: Metadata = pageMetadata({
+  title: 'Careers & Open Positions',
+  description:
+    'Careers at CanzoTech: how we work, what we look for and how hiring works. Send an open application to join a small, senior software engineering team.',
+  path: '/careers',
+});
 
 const principles = [
   { title: 'Ownership with context', text: 'Understand why the work matters before deciding how to build it.' },

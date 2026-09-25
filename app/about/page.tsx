@@ -4,12 +4,14 @@ import { Action } from '@/components/Action';
 import { CtaBand } from '@/components/CtaBand';
 import { PageIntro } from '@/components/PageIntro';
 import { stats } from '@/lib/site-data';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'About',
-  description: 'How CanzoTech approaches software development, product thinking and long-term technology partnerships.',
-  alternates: { canonical: '/about' },
-};
+export const metadata: Metadata = pageMetadata({
+  title: 'About Our Software Engineering Studio',
+  description:
+    'Meet CanzoTech, a product-minded software engineering studio in Noida. How we approach software development, product thinking and long-term partnerships.',
+  path: '/about',
+});
 
 const values = [
   { title: 'Clarity before complexity', text: 'We define the real business problem, the constraints and what success looks like before adding technology.' },
@@ -52,8 +54,8 @@ export default function AboutPage() {
           <Image
             src="/images/hero-bw.webp"
             alt="The CanzoTech team working together"
-            width={1600}
-            height={1073}
+            width={1264}
+            height={848}
             priority
             sizes="100vw"
             data-parallax="-0.04"
@@ -81,9 +83,9 @@ export default function AboutPage() {
 
       <section className="band band-soft">
         <div className="wrap">
-          <span className="mono index-label" data-reveal="up">
+          <h2 className="mono index-label" data-reveal="up">
             03 / Approach
-          </span>
+          </h2>
           <ol className="numbered-list">
             {values.map((value, index) => (
               <li key={value.title} data-reveal="up" style={{ '--reveal-delay': `${index * 60}ms` } as React.CSSProperties}>

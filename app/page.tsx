@@ -1,4 +1,6 @@
+import type { Metadata } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Action, TextLink } from '@/components/Action';
 import { BandHead } from '@/components/BandHead';
 import { CaseCard } from '@/components/CaseCard';
@@ -9,6 +11,19 @@ import { ServiceIndex } from '@/components/ServiceIndex';
 import { TechRail } from '@/components/TechRail';
 import { commitments, services, stats } from '@/lib/site-data';
 import { solutions } from '@/lib/solutions';
+import { SITE_LOCALE, SITE_NAME } from '@/lib/seo';
+
+const HOME_TITLE = 'CanzoTech — Custom Software Development Company in Noida';
+const HOME_DESCRIPTION =
+  'CanzoTech is a software engineering studio in Noida, India, designing and building custom software, web and mobile apps, AI automation and cloud platforms.';
+
+export const metadata: Metadata = {
+  title: { absolute: HOME_TITLE },
+  description: HOME_DESCRIPTION,
+  alternates: { canonical: '/' },
+  openGraph: { type: 'website', siteName: SITE_NAME, locale: SITE_LOCALE, url: '/', title: HOME_TITLE, description: HOME_DESCRIPTION },
+  twitter: { card: 'summary_large_image', title: HOME_TITLE, description: HOME_DESCRIPTION },
+};
 
 const heroLines = ['We turn ambitious', 'ideas into <em>software</em>', 'that earns its keep.'];
 
@@ -89,14 +104,14 @@ export default function HomePage() {
           <Image
             src="/images/hero-bw.webp"
             alt="CanzoTech engineers working together"
-            width={1600}
-            height={1073}
+            width={1264}
+            height={848}
             priority
             sizes="100vw"
           />
         </figure>
         <figcaption className="wrap reveal-caption mono">
-          <span>Fig. 01 — Delivery studio, Bengaluru</span>
+          <span>Fig. 01 — Delivery studio, Noida</span>
           <span>Est. engineering practice</span>
         </figcaption>
       </section>
@@ -231,7 +246,7 @@ export default function HomePage() {
             </div>
           ))}
           <div className="rail-slide">
-            <a className="case case-end" href="/contact">
+            <Link className="case case-end" href="/contact">
               <span className="mono">Next</span>
               <span className="display display-m">
                 Your product <em>here</em>.
@@ -240,7 +255,7 @@ export default function HomePage() {
                 <span>Start a project</span>
                 <Icon name="arrowUpRight" size={13} />
               </span>
-            </a>
+            </Link>
           </div>
         </Rail>
       </section>

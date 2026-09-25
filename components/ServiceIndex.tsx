@@ -24,6 +24,8 @@ const previews: Record<string, string> = {
  */
 export function ServiceIndex({ services }: { services: Service[] }) {
   const [active, setActive] = useState<string | null>(null);
+  // Preview images are only fetched once a mouse enters the list; touch visitors never download them.
+  const [armed, setArmed] = useState(false);
   const layer = useRef<HTMLDivElement>(null);
 
   const track = (event: React.PointerEvent) => {
@@ -33,7 +35,13 @@ export function ServiceIndex({ services }: { services: Service[] }) {
   };
 
   return (
-    <div className="srv" onPointerMove={track}>
+    <div
+      className="srv"
+      onPointerMove={track}
+      onPointerEnter={(event) => {
+        if (event.pointerType === 'mouse') setArmed(true);
+      }}
+    >
       <div className="wrap">
         <ol className="srv-rows">
           {services.map((service, index) => (
@@ -62,7 +70,7 @@ export function ServiceIndex({ services }: { services: Service[] }) {
       </div>
 
       <div className={`srv-preview ${active ? 'is-on' : ''}`} ref={layer} aria-hidden="true">
-        {services.map((service) => (
+        {armed && services.map((service) => (
           <Image
             key={service.slug}
             src={previews[service.slug] ?? '/images/keys-bw.webp'}

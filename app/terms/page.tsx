@@ -1,12 +1,16 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { company } from '@/lib/site-data';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Terms & Conditions',
-  description: 'The terms that apply to use of the CanzoTech website and enquiries submitted through it.',
-  alternates: { canonical: '/terms' },
-};
+  description:
+    'The terms that apply to use of the CanzoTech website and to enquiries submitted through it.',
+  path: '/terms',
+  // Thin boilerplate page: crawlable, but kept out of search results and the sitemap.
+  noIndex: true,
+});
 
 export default function TermsPage() {
   return (

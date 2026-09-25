@@ -1,10 +1,7 @@
-import type { IconName } from '@/components/Icon';
-
 export type Service = {
   slug: string;
   name: string;
   shortName: string;
-  icon: IconName;
   description: string;
   intro: string;
   challenges: string[];
@@ -17,11 +14,15 @@ export const company = {
   name: 'CanzoTech',
   email: 'canzotech@gmail.com',
   mobile: '7651850667',
-  phone: '7651850667',
+  phoneE164: '+91-7651850667', // international format for structured data
   landline: 'LN-012029644430',
   linkedin: 'https://www.linkedin.com/company/canzotech/home/',
   location: 'BSI Business Park H161 Sector 63 Noida',
-  address: 'BSI Business Park H161 Sector 63 Noida',
+  // Structured address for schema.org; keep in sync with `location`.
+  streetAddress: 'BSI Business Park, H-161, Sector 63',
+  city: 'Noida',
+  region: 'Uttar Pradesh',
+  postalCode: '201301',
   description:
     'CanzoTech designs and develops scalable software products for operational, customer-facing and growth-critical business needs.',
 };
@@ -40,7 +41,6 @@ export const services: Service[] = [
     slug: 'custom-software-development',
     name: 'Custom Software Development',
     shortName: 'Custom Software',
-    icon: 'code',
     description:
       'Tailored platforms, internal tools and digital products built around your workflows and business rules.',
     intro:
@@ -77,7 +77,6 @@ export const services: Service[] = [
     slug: 'web-development',
     name: 'Web Application Development',
     shortName: 'Web Development',
-    icon: 'web',
     description:
       'Responsive, secure web applications engineered for real operational use, not just presentation.',
     intro:
@@ -112,7 +111,6 @@ export const services: Service[] = [
     slug: 'mobile-app-development',
     name: 'Mobile App Development',
     shortName: 'Mobile Apps',
-    icon: 'mobile',
     description:
       'Mobile products for iOS and Android with focused UX, reliable APIs and scalable product architecture.',
     intro:
@@ -129,7 +127,6 @@ export const services: Service[] = [
     slug: 'ai-automation',
     name: 'AI & Automation Solutions',
     shortName: 'AI & Automation',
-    icon: 'automation',
     description:
       'Practical automation for repetitive workflows, internal knowledge tasks and software-assisted decision processes.',
     intro:
@@ -146,7 +143,6 @@ export const services: Service[] = [
     slug: 'cloud-devops',
     name: 'Cloud & DevOps Services',
     shortName: 'Cloud & DevOps',
-    icon: 'cloud',
     description:
       'Deployment, infrastructure and release practices designed for stability, security and predictable delivery.',
     intro:
@@ -163,7 +159,6 @@ export const services: Service[] = [
     slug: 'ui-ux-design',
     name: 'UI/UX Design',
     shortName: 'UI/UX Design',
-    icon: 'design',
     description:
       'Product interfaces grounded in real user journeys, business rules and implementation constraints.',
     intro:
@@ -180,7 +175,6 @@ export const services: Service[] = [
     slug: 'qa-testing',
     name: 'QA & Software Testing',
     shortName: 'QA & Testing',
-    icon: 'test',
     description:
       'Structured quality assurance for functional behavior, regressions, user flows and release confidence.',
     intro:
@@ -197,7 +191,6 @@ export const services: Service[] = [
     slug: 'cyber-security',
     name: 'Cyber Security Services',
     shortName: 'Cyber Security',
-    icon: 'shield',
     description:
       'Security assessments, hardening and secure engineering practices that protect applications, data and infrastructure.',
     intro:
@@ -214,7 +207,6 @@ export const services: Service[] = [
     slug: 'technology-consulting',
     name: 'Technology Consulting',
     shortName: 'Consulting',
-    icon: 'consulting',
     description:
       'Practical architecture, modernization and delivery guidance for product and operational technology decisions.',
     intro:
@@ -235,11 +227,6 @@ export const stats = [
   { value: 4, suffix: '', label: 'Phase delivery framework' },
   { value: 100, suffix: '%', label: 'Code & IP ownership for clients' },
   { value: 2, suffix: ' wk', label: 'Sprint cadence with live demos' },
-];
-
-export const techStack = [
-  'React', 'Next.js', 'TypeScript', 'Node.js', 'Python', 'React Native', 'PostgreSQL', 'Redis',
-  'GraphQL', 'AWS', 'Azure', 'Google Cloud', 'Docker', 'Terraform', 'Firebase', 'Figma', 'Playwright',
 ];
 
 // Shown instead of testimonials until verified client quotes are supplied.

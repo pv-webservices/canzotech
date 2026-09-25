@@ -4,12 +4,14 @@ import { CtaBand } from '@/components/CtaBand';
 import { PageIntro } from '@/components/PageIntro';
 import { ServiceIndex } from '@/components/ServiceIndex';
 import { services } from '@/lib/site-data';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Services',
-  description: 'Custom software, web and mobile development, AI automation, cloud, UI/UX, QA and technology consulting from CanzoTech.',
-  alternates: { canonical: '/services' },
-};
+export const metadata: Metadata = pageMetadata({
+  title: 'Software Development Services',
+  description:
+    'Custom software, web and mobile app development, AI automation, cloud and DevOps, UI/UX design, QA testing, cyber security and technology consulting.',
+  path: '/services',
+});
 
 const stages = [
   { title: 'Discover', text: 'Objectives, workflows, users and constraints.' },

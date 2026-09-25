@@ -8,6 +8,10 @@ import { CaseCard } from '@/components/CaseCard';
 import { CtaBand } from '@/components/CtaBand';
 import { Icon } from '@/components/Icon';
 import { PageIntro } from '@/components/PageIntro';
+import { pageMetadata } from '@/lib/seo';
+
+// Only the known project slugs exist; anything else is a real 404 instead of an on-demand render.
+export const dynamicParams = false;
 
 export function generateStaticParams() {
   return solutions.map((solution) => ({ slug: solution.slug }));
@@ -16,8 +20,13 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const solution = solutions.find((item) => item.slug === slug);
-  if (!solution) return { title: 'Project' };
-  return { title: solution.name, description: solution.summary, alternates: { canonical: `/work/${solution.slug}` } };
+  if (!solution) return {};
+  return pageMetadata({
+    title: `${solution.name} Development`,
+    description: `${solution.summary} See the approach, features and stack.`,
+    path: `/work/${solution.slug}`,
+    image: `/work/${solution.slug}/opengraph-image`,
+  });
 }
 
 export default async function SolutionPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -95,9 +104,9 @@ export default async function SolutionPage({ params }: { params: Promise<{ slug:
 
       <section className="band band-soft">
         <div className="wrap two-col">
-          <span className="mono index-label" data-reveal="up">
+          <h2 className="mono index-label" data-reveal="up">
             B / How we approach it
-          </span>
+          </h2>
           <div className="col-copy">
             <ol className="numbered-list">
               {solution.approach.map((step, index) => (
@@ -115,9 +124,9 @@ export default async function SolutionPage({ params }: { params: Promise<{ slug:
 
       <section className="band band-ink">
         <div className="wrap two-col">
-          <span className="mono index-label" data-reveal="up">
+          <h2 className="mono index-label" data-reveal="up">
             C / Typical feature set
-          </span>
+          </h2>
           <div className="col-copy">
             <ul className="tick-list tick-list-split">
               {solution.features.map((feature, index) => (

@@ -180,10 +180,13 @@
 .form-status { display: flex; align-items: flex-start; gap: 10px; padding: 14px 16px; border-left: 2px solid var(--g-blue); background: var(--paper-2); font-size: 14px; color: var(--ink); }
 .form-status svg { flex: 0 0 auto; margin-top: 3px; }
 .form-status.error { border-color: #d0342c; }
+.field-error { font-size: 13px; line-height: 1.4; color: #b42318; }
+.contact-form [aria-invalid="true"] { border-bottom-color: #b42318; }
 
 /* ------------------------------------------------------------------ FAQ */
 .faq-list { display: grid; width: 100%; border-top: 1px solid var(--rule); }
 .faq-item { border-bottom: 1px solid var(--rule); }
+.faq-question { font: inherit; }
 .faq-item button {
   display: flex;
   width: 100%;

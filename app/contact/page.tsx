@@ -3,12 +3,14 @@ import Link from 'next/link';
 import { ContactForm } from '@/components/ContactForm';
 import { PageIntro } from '@/components/PageIntro';
 import { company, services } from '@/lib/site-data';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Contact',
-  description: 'Discuss a software development, modernisation or automation project with CanzoTech.',
-  alternates: { canonical: '/contact' },
-};
+export const metadata: Metadata = pageMetadata({
+  title: 'Contact Us — Start a Software Project',
+  description:
+    'Discuss a software development, modernisation or automation project with CanzoTech. Share your goals and get a considered plan, not a sales sequence.',
+  path: '/contact',
+});
 
 const steps = [
   { title: 'You share the context', text: 'The problem, your current setup, the timeline and what a good outcome looks like.' },
@@ -77,9 +79,9 @@ export default function ContactPage() {
       <section className="band rule-top">
         <div className="wrap contact-grid">
           <div className="contact-side">
-            <span className="mono index-label" data-reveal="up">
+            <h2 className="mono index-label" data-reveal="up">
               02 / What happens next
-            </span>
+            </h2>
             <ol className="numbered-list numbered-list-tight">
               {steps.map((step, index) => (
                 <li key={step.title} data-reveal="up" style={{ '--reveal-delay': `${index * 60}ms` } as React.CSSProperties}>

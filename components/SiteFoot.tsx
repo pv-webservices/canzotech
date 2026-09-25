@@ -58,7 +58,7 @@ export function SiteFoot() {
           <div className="foot-links">
             <Link href="/privacy-policy">Privacy</Link>
             <Link href="/terms">Terms</Link>
-            <Link href="/sitemap.xml">Sitemap</Link>
+            <a href="/sitemap.xml">Sitemap</a>
           </div>
           <span>Innovate · Build · Grow</span>
         </div>

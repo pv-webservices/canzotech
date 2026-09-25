@@ -1,58 +1,21 @@
 import { company } from './site-data';
 import { findCountry } from './country-codes';
+import { type Enquiry, isLikelyBot } from './enquiry-validation';
+
+export type { Enquiry } from './enquiry-validation';
 
 // FormSubmit (formsubmit.co) forwards each enquiry to the client's inbox. The first submission triggers a
 // one-time "Activate Form" email to this address; nothing is delivered until that link is clicked.
 // After activation, FormSubmit also offers a random alias that can replace the email in this URL.
 export const ENQUIRY_ENDPOINT = `https://formsubmit.co/ajax/${company.email}`;
 
-export type Enquiry = {
-  name: string;
-  email: string;
-  countryCode: string; // ISO code of the phone number's country, e.g. 'IN'
-  phone: string;
-  company: string;
-  service: string;
-  budget: string;
-  details: string;
-  website: string; // honeypot: real visitors never see or fill this
-};
-
-const MIN_NAME_LENGTH = 2;
-const MIN_DETAILS_LENGTH = 20;
-// ITU-T E.164 caps full numbers at 15 digits; national numbers are rarely shorter than 6.
-const MIN_PHONE_DIGITS = 6;
-const MAX_PHONE_DIGITS = 14;
-const INDIA_PHONE_DIGITS = 10;
-
-function isValidEmail(value: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-}
-
-/** Phone is optional; when given it must look like a real national number for the chosen country. */
-function phoneError(countryCode: string, phone: string): string | null {
-  const value = phone.trim();
-  if (!value) return null;
-  if (!/^[\d\s()-]+$/.test(value)) return 'Please enter the phone number using digits only.';
-  const digits = value.replace(/\D/g, '');
-  if (countryCode === 'IN' && digits.length !== INDIA_PHONE_DIGITS) return 'Please enter a 10-digit Indian phone number.';
-  if (digits.length < MIN_PHONE_DIGITS || digits.length > MAX_PHONE_DIGITS) return 'Please enter a valid phone number.';
-  return null;
-}
+// FormSubmit discards submissions containing any of these phrases, server side. That also covers bots that
+// post straight to the endpoint and never load this page.
+const SPAM_PHRASES = ['viagra', 'casino', 'crypto investment', 'bitcoin investment', 'buy backlinks', 'forex signals'];
 
 function formatPhone(countryCode: string, phone: string) {
   const value = phone.trim();
   return value ? `${findCountry(countryCode).dial} ${value}` : '';
-}
-
-/** Returns a user-facing error message, or null when the enquiry can be sent. */
-export function validateEnquiry(enquiry: Enquiry): string | null {
-  if (enquiry.name.trim().length < MIN_NAME_LENGTH) return 'Please enter your full name.';
-  if (!isValidEmail(enquiry.email.trim())) return 'Please enter a valid business email.';
-  const invalidPhone = phoneError(enquiry.countryCode, enquiry.phone);
-  if (invalidPhone) return invalidPhone;
-  if (enquiry.details.trim().length < MIN_DETAILS_LENGTH) return 'Please provide more detail about the project.';
-  return null;
 }
 
 function buildPayload(enquiry: Enquiry) {
@@ -75,13 +38,17 @@ function buildPayload(enquiry: Enquiry) {
     _replyto: enquiry.email.trim(),
     _template: 'table',
     _captcha: 'false',
+    _blacklist: SPAM_PHRASES.join(', '),
   };
 }
 
-/** Sends the enquiry to the client's inbox. Throws with a user-facing message on failure. */
-export async function sendEnquiry(enquiry: Enquiry): Promise<void> {
-  // Bots that fill the honeypot get a silent "success" and nothing is sent.
-  if (enquiry.website.trim()) return;
+/**
+ * Sends a validated enquiry to the client's inbox. `startedAt` is when the visitor began filling the form,
+ * used for the time-trap spam check. Throws with a user-facing message on failure.
+ */
+export async function sendEnquiry(enquiry: Enquiry, startedAt: number): Promise<void> {
+  // Bots get a silent "success" and nothing is sent.
+  if (isLikelyBot(enquiry, startedAt, Date.now())) return;
 
   let response: Response;
   try {

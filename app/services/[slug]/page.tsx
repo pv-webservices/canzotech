@@ -8,9 +8,21 @@ import { CaseCard } from '@/components/CaseCard';
 import { CtaBand } from '@/components/CtaBand';
 import { FaqAccordion } from '@/components/FaqAccordion';
 import { Icon } from '@/components/Icon';
+import { JsonLd } from '@/components/JsonLd';
 import { PageIntro } from '@/components/PageIntro';
+import { absoluteUrl, ORGANIZATION_ID, pageMetadata } from '@/lib/seo';
 
 const phases = ['Discover', 'Plan', 'Design', 'Build', 'Test', 'Deliver'];
+
+// Only the known service slugs exist; anything else is a real 404 instead of an on-demand render.
+export const dynamicParams = false;
+
+const MAX_DESCRIPTION_LENGTH = 160;
+
+/** Search title: 'Custom Software Development Services' rather than the bare service name. */
+function serviceTitle(name: string) {
+  return /(services|solutions)$/i.test(name) ? name : `${name} Services`;
+}
 
 export function generateStaticParams() {
   return services.map((service) => ({ slug: service.slug }));
@@ -20,7 +32,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const service = services.find((item) => item.slug === slug);
   if (!service) return {};
-  return { title: service.name, description: service.description, alternates: { canonical: `/services/${service.slug}` } };
+  return pageMetadata({
+    title: serviceTitle(service.name),
+    description: service.intro.length <= MAX_DESCRIPTION_LENGTH ? service.intro : service.description,
+    path: `/services/${service.slug}`,
+    image: `/services/${service.slug}/opengraph-image`,
+  });
 }
 
 export default async function ServiceDetailPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -36,8 +53,21 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
     '@context': 'https://schema.org',
     '@type': 'Service',
     name: service.name,
-    provider: { '@type': 'Organization', name: 'CanzoTech' },
+    serviceType: service.name,
     description: service.description,
+    url: absoluteUrl(`/services/${service.slug}`),
+    provider: { '@id': ORGANIZATION_ID },
+    areaServed: { '@type': 'Country', name: 'India' },
+  };
+
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: service.faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+    })),
   };
 
   return (
@@ -91,9 +121,9 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
 
       <section id="capabilities" className="band band-soft">
         <div className="wrap">
-          <span className="mono index-label" data-reveal="up">
+          <h2 className="mono index-label" data-reveal="up">
             B / Capabilities
-          </span>
+          </h2>
           <ol className="numbered-list numbered-list-split">
             {service.capabilities.map((item, index) => (
               <li key={item} data-reveal="up" style={{ '--reveal-delay': `${index * 50}ms` } as React.CSSProperties}>
@@ -200,7 +230,8 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
         description="Share the current system, the constraints and the outcome you are aiming for."
       />
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <JsonLd data={schema} />
+      <JsonLd data={faqSchema} />
     </>
   );
 }

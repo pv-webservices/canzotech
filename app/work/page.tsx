@@ -4,12 +4,14 @@ import { CtaBand } from '@/components/CtaBand';
 import { PageIntro } from '@/components/PageIntro';
 import { WorkGrid } from '@/components/WorkGrid';
 import { solutions } from '@/lib/solutions';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Our Work',
-  description: 'Solution blueprints from CanzoTech across SaaS platforms, commerce, fintech and healthcare products.',
-  alternates: { canonical: '/work' },
-};
+export const metadata: Metadata = pageMetadata({
+  title: 'Our Work & Solution Blueprints',
+  description:
+    'Solution blueprints from CanzoTech for SaaS platforms, e-commerce, fintech and healthcare products: the problem, our approach, the features and the stack.',
+  path: '/work',
+});
 
 const standard = [
   { title: 'Context', text: 'The business situation, the users and the constraints.' },

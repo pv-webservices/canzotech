@@ -69,10 +69,39 @@ top for desktop. (It replaced an earlier scroll-pinned implementation that did n
 ## Routes
 
 `/`, `/about`, `/services` + 9 service pages, `/work` + 4 project pages, `/careers`, `/contact`,
-`/privacy-policy`, `/terms`, plus `sitemap.xml` and `robots.txt`. There is no blog.
+`/privacy-policy`, `/terms`, plus `sitemap.xml`, `robots.txt` and `manifest.webmanifest`. There is no blog.
 
-Editable content lives in `lib/site-data.ts` (company, navigation, services, stats, tech stack, commitments,
-jobs) and `lib/solutions.ts` (project blueprints).
+Unknown URLs, including unknown service or project slugs (`dynamicParams = false`), render `app/not-found.tsx`
+with a real 404 status. Runtime failures render `app/error.tsx`, or `app/global-error.tsx` if the root layout
+itself fails.
+
+Editable content lives in `lib/site-data.ts` (company, navigation, services, stats, commitments, jobs) and
+`lib/solutions.ts` (project blueprints).
+
+## SEO
+
+- **Metadata**: every page builds its tags with `pageMetadata()` in `lib/seo.ts`, which sets a unique title,
+  description, canonical, Open Graph and Twitter tags. The production origin (`SITE_URL`) is defined once there.
+- **Share images**: `app/opengraph-image.tsx`, plus a card for each service and project, rendered at build time by
+  `lib/og-image.tsx`. The renderer fetches Archivo and JetBrains Mono subsets from Google Fonts and falls back
+  to a built-in font when offline.
+- **Structured data**: Organization + WebSite (root layout), BreadcrumbList (from `PageIntro` crumbs), and
+  Service + FAQPage (service pages), all rendered through `components/JsonLd.tsx`.
+- **Indexing**: `/privacy-policy` and `/terms` are `noindex, follow` and left out of the sitemap, and error pages
+  are noindex. Every other page is in `app/sitemap.ts`. To index the legal pages, remove `noIndex` and add them
+  back to the sitemap.
+- **Icons**: `app/favicon.ico`, `app/icon.png` and `app/apple-icon.png` are generated from the brand mark.
+
+After launch, verify the domain in Google Search Console and submit `https://www.canzotech.com/sitemap.xml`.
+
+## Tests
+
+```bash
+npm test
+```
+
+Runs `tests/*.test.ts` with Node's built-in test runner. Node 22.18+ runs TypeScript directly, so no extra
+packages are needed.
 
 ## Images
 
@@ -98,6 +127,15 @@ See `CONTENT_CHECKLIST.md` for what to swap in before launch.
 
 ## Contact form
 
-`components/ContactForm.tsx` validates the enquiry (including a honeypot) and `lib/enquiry.ts` sends it through
+The rules live in `lib/enquiry-validation.ts`:
+
+- Name, email and project details are required.
+- Every field has a length limit, and the phone number format is checked.
+- Project details may contain at most 3 links.
+
+Spam checks: a hidden honeypot field and a 3-second time trap both drop a submission silently.
+`components/ContactForm.tsx` shows errors beside each field, focuses the first invalid one, and blocks a repeat
+send for 60 seconds. `lib/enquiry.ts` also passes a phrase blacklist to FormSubmit, which filters server side,
+and sends the enquiry through
 [FormSubmit](https://formsubmit.co)'s AJAX endpoint to `company.email` (`canzotech@gmail.com`). The very first
 submission sends an "Activate Form" email to that inbox; enquiries are only delivered once the link is clicked.

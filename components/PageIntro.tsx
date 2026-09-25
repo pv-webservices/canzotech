@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Icon } from './Icon';
-
-export type Crumb = { label: string; href?: string };
+import { JsonLd } from './JsonLd';
+import { breadcrumbSchema, type Crumb } from '@/lib/seo';
 
 export function PageIntro({
   index,
@@ -55,6 +55,7 @@ export function PageIntro({
           ) : null}
         </div>
       </div>
+      {crumbs.length ? <JsonLd data={breadcrumbSchema(crumbs)} /> : null}
     </section>
   );
 }

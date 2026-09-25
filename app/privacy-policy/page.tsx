@@ -1,12 +1,16 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { company } from '@/lib/site-data';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Privacy Policy',
-  description: 'How CanzoTech collects, uses and protects information submitted through this website.',
-  alternates: { canonical: '/privacy-policy' },
-};
+  description:
+    'How CanzoTech collects, uses and protects information submitted through this website, and the choices available to you.',
+  path: '/privacy-policy',
+  // Thin boilerplate page: crawlable, but kept out of search results and the sitemap.
+  noIndex: true,
+});
 
 export default function PrivacyPage() {
   return (

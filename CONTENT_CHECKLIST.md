@@ -20,11 +20,15 @@ CanzoTech material, and each one is a small edit in `lib/`.
    when available.
 8. **Legal pages** — `/privacy-policy` and `/terms` are written as a reasonable baseline; have them reviewed by
    a lawyer for the correct jurisdiction and business model.
-9. **Domain** — replace `https://www.canzotech.com` in `app/layout.tsx`, `app/sitemap.ts` and `app/robots.ts`
-    if the production domain differs.
+9. **Domain**: if the production domain differs, replace `SITE_URL` in `lib/seo.ts`. Canonicals, the sitemap,
+   robots.txt, share images and structured data all derive from it.
+10. **Structured address**: the search-engine address comes from `company` in `lib/site-data.ts`
+    (street, city, region, postal code `201301`). Confirm the postal code.
 
 ## Before going live
 
 - Activate FormSubmit: submit the contact form once from the live site, then click "Activate Form" in the email sent to canzotech@gmail.com.
 - Confirm the imagery on Our Work is understood as illustrative; `/terms` already states this.
-- Re-run `npm run build` and check `/sitemap.xml`.
+- Re-run `npm test` and `npm run build`, then check `/sitemap.xml` and `/robots.txt`.
+- Verify the domain in Google Search Console, submit the sitemap and request indexing for the homepage.
+- Run one service page through Google's Rich Results Test and check a link preview on LinkedIn.
