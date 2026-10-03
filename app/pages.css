@@ -18,8 +18,14 @@
   pointer-events: none;
 }
 
-.crumbs { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; color: var(--on-paper-muted); }
+.crumbs { position: relative; display: flex; flex-wrap: nowrap; align-items: center; gap: 8px; min-width: 0; white-space: nowrap; color: var(--on-paper-muted); }
 .crumbs span { display: inline-flex; align-items: center; gap: 8px; }
+/* One line whatever the font: the trail never wraps (a wrap that changed when web fonts loaded caused layout
+   shift), and the current page's name truncates with an ellipsis on narrow screens. */
+.crumbs > span:last-child { min-width: 0; }
+.crumbs em { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+/* At least 24px tall and wide so the small mono links are easy to tap. */
+.crumbs a { display: inline-flex; align-items: center; min-height: 28px; min-width: 24px; }
 .crumbs a:hover { color: var(--ink); }
 .crumbs em { font-style: normal; color: var(--ink); }
 
@@ -31,11 +37,6 @@
 .intro-aside { display: grid; gap: 14px; }
 .intro-stack { display: grid; gap: 14px; padding-top: 4px; }
 .intro-stack > .mono { color: var(--on-paper-muted); }
-.contact-detail-block { display: grid; gap: 2px; padding-bottom: 10px; border-bottom: 1px solid var(--rule); }
-.contact-detail-label { font-size: 11px; color: var(--on-paper-muted); text-transform: uppercase; letter-spacing: 0.05em; }
-.contact-link { word-break: break-word; transition: color 0.35s var(--ease); text-decoration: none; }
-.contact-link:hover { color: var(--g-blue); }
-.contact-text { word-break: break-word; color: var(--ink); }
 
 .spec-list { display: grid; margin: 0; border-top: 1px solid var(--rule); }
 .spec-list > div { display: grid; grid-template-columns: minmax(80px, 0.5fr) minmax(0, 1.5fr); gap: 18px; padding: 14px 0; border-bottom: 1px solid var(--rule); }
@@ -150,7 +151,7 @@
 .form-header p { font-size: 13.5px; }
 .contact-form { display: grid; gap: 20px; }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.contact-form label { display: grid; gap: 9px; }
+.contact-form .field { display: grid; gap: 9px; align-content: start; }
 .field-label { font-family: var(--font-mono), monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--on-paper-muted); }
 .field-label em { font-style: normal; color: var(--g-blue); }
 .contact-form input, .contact-form select, .contact-form textarea {
@@ -182,6 +183,20 @@
 .form-status.error { border-color: #d0342c; }
 .field-error { font-size: 13px; line-height: 1.4; color: #b42318; }
 .contact-form [aria-invalid="true"] { border-bottom-color: #b42318; }
+.form-status > span { display: grid; gap: 8px; }
+.alt-contacts { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.alt-contacts a { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; color: var(--g-blue); text-decoration: underline; text-underline-offset: 3px; }
+.consent { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; font-size: 13.5px; line-height: 1.5; color: var(--on-paper-muted); cursor: pointer; }
+.consent em { font-style: normal; color: var(--g-blue); }
+.consent a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+.contact-form .consent input { width: 20px; height: 20px; margin: 1px 0 0; padding: 0; accent-color: var(--ink); cursor: pointer; }
+.contact-form .consent input:focus-visible { outline: 2px solid var(--g-blue); outline-offset: 2px; }
+.contact-form .consent input[aria-invalid="true"]:not(:focus-visible) { outline: 2px solid #b42318; outline-offset: 2px; }
+.form-actions { display: grid; grid-template-columns: 1fr auto; gap: 12px; margin-top: 6px; }
+.form-actions .submit-button { margin-top: 0; }
+.whatsapp-button { gap: 10px; }
+.contact-form-compact { gap: 16px; }
+.contact-form-compact .form-grid { gap: 16px 20px; }
 
 /* ------------------------------------------------------------------ FAQ */
 .faq-list { display: grid; width: 100%; border-top: 1px solid var(--rule); }
@@ -226,10 +241,37 @@
 }
 
 @media (max-width: 620px) {
-  .form-grid, .tick-list-split { grid-template-columns: 1fr; }
+  .form-grid, .tick-list-split, .form-actions { grid-template-columns: 1fr; }
   .phase-row { grid-template-columns: repeat(2, 1fr); }
   .numbered-list li { grid-template-columns: 34px minmax(0, 1fr); gap: 14px; }
   .spec-list > div { grid-template-columns: 1fr; gap: 4px; }
   .case-grid { grid-template-columns: 1fr; }
   .intro-meta { font-size: 9.5px; }
+}
+
+/* --------------------------------------------------------------- Photos */
+.photo { margin: 0; display: grid; gap: 12px; align-content: start; }
+.photo-frame { display: block; overflow: hidden; border-radius: 4px; background: var(--paper-2); }
+.photo-frame img { display: block; width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.05); transition: filter 0.6s var(--ease), transform 0.9s var(--ease-out); }
+.photo:hover .photo-frame img { filter: none; transform: scale(1.03); }
+.photo figcaption { color: var(--on-paper-muted); }
+.photo-contained { width: 100%; max-width: 760px; }
+.photo-wide { width: 100%; max-width: 1000px; }
+
+/* Careers intro: the team photo sits in the aside column. */
+.intro-photo { width: 100%; max-width: 520px; }
+
+/* Life at CanzoTech gallery: two rows of mixed widths on desktop, one column on phones. */
+.gallery { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: clamp(12px, 1.6vw, 20px); width: 100%; list-style: none; margin: 0; padding: 0; }
+.gallery > li { display: grid; }
+.gallery .photo, .gallery .photo-frame { height: 100%; }
+.gallery .photo { grid-template-rows: 1fr auto; }
+.gallery-lead { grid-column: span 7; }
+.gallery-side { grid-column: span 5; }
+.gallery-half { grid-column: span 6; }
+.gallery-lead .photo-frame { aspect-ratio: 760 / 410; }
+.gallery-half .photo-frame { aspect-ratio: 16 / 9; }
+@media (max-width: 760px) {
+  .gallery-lead, .gallery-side, .gallery-half { grid-column: 1 / -1; }
+  .gallery .photo-frame { aspect-ratio: auto; height: auto; }
 }

@@ -30,6 +30,26 @@ export default function PrivacyPage() {
           data such as IP address, browser type and pages visited, which is used to keep the site secure and reliable.
         </p>
 
+        <h2 className="display display-s">How form submissions are sent and stored</h2>
+        <p>
+          When you send the contact or free-quote form, your details travel over an encrypted (HTTPS) connection to our own
+          website server. The server checks them and emails them, over an encrypted connection, from CanzoTech&apos;s own
+          business mailbox (hosted by Zoho Mail) to our team inboxes at {company.emails.join(', ')}. No third-party form
+          service receives your enquiry, and the website itself does not keep a database of submissions: the copy we keep
+          is the email in our business mailbox.
+        </p>
+        <p>
+          The email contains the fields you filled in, the page you sent it from and the time it was sent. To protect the
+          form from abuse, the server briefly holds your IP address in memory to limit repeated submissions; it is not
+          stored or included in the email. While you are typing, the form also keeps a copy of your entries in your own
+          browser for that tab only (session storage), so nothing is lost if the page reloads; it is cleared once the
+          enquiry is sent or when you close the tab.
+        </p>
+        <p>
+          If you choose &ldquo;Send via WhatsApp&rdquo; or the WhatsApp button, your message is sent through WhatsApp
+          (Meta) under WhatsApp&apos;s own privacy policy.
+        </p>
+
         <h2 className="display display-s">How we use information</h2>
         <p>
           Enquiry details are used to respond to you, scope potential work and maintain our business records. Recruitment
@@ -46,8 +66,10 @@ export default function PrivacyPage() {
 
         <h2 className="display display-s">Cookies</h2>
         <p>
-          This website uses only the cookies required for it to function. If analytics or marketing cookies are introduced
-          later, this policy will be updated and consent will be requested where required.
+          This website does not set analytics or marketing cookies. It uses your browser&apos;s session storage only to keep
+          an unsent form draft and to remember that you have already seen the free-quote pop-up during this visit. If
+          analytics or marketing cookies are introduced later, this policy will be updated and consent will be requested
+          where required.
         </p>
 
         <h2 className="display display-s">Your choices</h2>

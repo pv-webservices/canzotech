@@ -3,6 +3,8 @@ import Image from 'next/image';
 import { Action } from '@/components/Action';
 import { CtaBand } from '@/components/CtaBand';
 import { PageIntro } from '@/components/PageIntro';
+import { PhotoFigure } from '@/components/PhotoFigure';
+import { photos } from '@/lib/photos';
 import { company, jobs } from '@/lib/site-data';
 import { pageMetadata } from '@/lib/seo';
 
@@ -39,23 +41,30 @@ export default function CareersPage() {
         }
         description="We keep teams small, give engineers genuine ownership and treat clear thinking as a core skill."
         crumbs={[{ label: 'Careers' }]}
-        actions={<Action href="#openings">See openings</Action>}
+        actions={
+          <>
+            <Action href="#openings">See openings</Action>
+            <Action href="#life" variant="outline">
+              Life at CanzoTech
+            </Action>
+          </>
+        }
+        aside={
+          <figure className="photo intro-photo">
+            <span className="photo-frame">
+              <Image
+                src={photos.careersTeam.src}
+                alt={photos.careersTeam.alt}
+                width={photos.careersTeam.width}
+                height={photos.careersTeam.height}
+                sizes="(max-width: 900px) 92vw, 520px"
+                priority
+                fetchPriority="high"
+              />
+            </span>
+          </figure>
+        }
       />
-
-      <figure className="page-figure">
-        <div className="page-figure-frame">
-          <Image
-            src="/images/team-bw.webp"
-            alt="The CanzoTech team at work"
-            width={1264}
-            height={848}
-            priority
-            sizes="100vw"
-            data-parallax="-0.04"
-          />
-        </div>
-        <figcaption className="wrap mono">Fig. 01 — Thinking out loud, on a wall</figcaption>
-      </figure>
 
       <section className="band rule-top">
         <div className="wrap two-col">
@@ -78,10 +87,41 @@ export default function CareersPage() {
         </div>
       </section>
 
+      <section id="life" className="band">
+        <div className="wrap two-col">
+          <span className="mono index-label" data-reveal="up">
+            03 / Life at CanzoTech
+          </span>
+          <div className="col-copy">
+            <h2 className="display display-l" data-reveal="mask">
+              Life at <em>CanzoTech.</em>
+            </h2>
+            <p className="lede" data-reveal="up">
+              Planning walls, design reviews around one table and working sessions in the room with the people who use
+              the product. A look at where and how the team works.
+            </p>
+            <ul className="gallery" aria-label="Photo gallery">
+              <li className="gallery-lead">
+                <PhotoFigure photo={photos.officeFloor} sizes="(max-width: 760px) 92vw, (max-width: 1440px) 48vw, 620px" caption="The office floor" />
+              </li>
+              <li className="gallery-side">
+                <PhotoFigure photo={photos.planningWall} sizes="(max-width: 760px) 92vw, (max-width: 1440px) 34vw, 450px" caption="Sprint planning" />
+              </li>
+              <li className="gallery-half">
+                <PhotoFigure photo={photos.conferenceRoom} sizes="(max-width: 760px) 92vw, (max-width: 1440px) 41vw, 530px" caption="Client walkthroughs" />
+              </li>
+              <li className="gallery-half">
+                <PhotoFigure photo={photos.teamCollaboration} sizes="(max-width: 760px) 92vw, (max-width: 1440px) 41vw, 530px" caption="Design reviews" />
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
       <section id="openings" className="band band-soft">
         <div className="wrap">
           <span className="mono index-label" data-reveal="up">
-            03 / Open positions
+            04 / Open positions
           </span>
           {jobs.length ? (
             <div className="srv-rows job-rows">
@@ -118,7 +158,7 @@ export default function CareersPage() {
       <section className="band">
         <div className="wrap two-col">
           <span className="mono index-label" data-reveal="up">
-            04 / Hiring process
+            05 / Hiring process
           </span>
           <div className="col-copy">
             <h2 className="display display-l" data-reveal="mask">
@@ -140,7 +180,7 @@ export default function CareersPage() {
       </section>
 
       <CtaBand
-        label="05 / General application"
+        label="06 / General application"
         title={
           <>
             Not seeing your role <em>listed?</em>

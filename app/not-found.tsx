@@ -1,13 +1,14 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Action } from '@/components/Action';
+import { Icon } from '@/components/Icon';
 import { PageIntro } from '@/components/PageIntro';
-import { navigation } from '@/lib/site-data';
+import { company, navigation, services } from '@/lib/site-data';
 
-// Next.js also sends a 404 status and a noindex tag for this page.
+// Next.js sends a real 404 status for this page. noindex, and no canonical (none is inherited from the layout).
 export const metadata: Metadata = {
   title: 'Page not found',
-  description: 'The page you were looking for does not exist or has moved.',
+  description: 'The page you were looking for does not exist or has moved. Find CanzoTech services, our work and contact details here.',
   robots: { index: false, follow: true },
 };
 
@@ -21,7 +22,7 @@ export default function NotFound() {
           This page <em>does not exist.</em>
         </>
       }
-      description="The link may be out of date, or the address may have been mistyped. Everything we publish is reachable from the pages below."
+      description="The link may be out of date, or the address may have been mistyped. Everything we publish is reachable from the pages listed here."
       actions={
         <>
           <Action href="/">Back to home</Action>
@@ -31,18 +32,34 @@ export default function NotFound() {
         </>
       }
       aside={
-        <nav className="intro-stack" aria-label="Main pages">
-          <span className="mono">Try instead</span>
-          <div className="chips chips-link">
-            {navigation
-              .filter((item) => item.href !== '/')
-              .map((item) => (
-                <Link key={item.href} href={item.href}>
-                  {item.label}
+        <div className="intro-stack">
+          <nav className="intro-stack" aria-label="Main pages">
+            <span className="mono">Main pages</span>
+            <div className="chips chips-link">
+              {navigation
+                .filter((item) => item.href !== '/')
+                .map((item) => (
+                  <Link key={item.href} href={item.href}>
+                    {item.label}
+                  </Link>
+                ))}
+            </div>
+          </nav>
+          <nav className="intro-stack" aria-label="Popular services">
+            <span className="mono">Popular services</span>
+            <div className="chips chips-link">
+              {services.slice(0, 5).map((service) => (
+                <Link key={service.slug} href={`/services/${service.slug}`}>
+                  {service.shortName}
                 </Link>
               ))}
-          </div>
-        </nav>
+            </div>
+          </nav>
+          <a className="link" href={company.mobileHref}>
+            <Icon name="mobile" size={15} />
+            <span>Call {company.mobile}</span>
+          </a>
+        </div>
       }
     />
   );

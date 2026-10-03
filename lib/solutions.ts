@@ -25,7 +25,7 @@ export const solutions: Solution[] = [
     name: 'SaaS Analytics Platform',
     type: 'Web Application',
     categories: ['Web Applications', 'Enterprise'],
-    image: '/images/case-saas.webp',
+    image: '/images/work/case-saas.webp',
     summary: 'Multi-tenant analytics dashboards that turn scattered operational data into real-time KPIs, reports and alerts.',
     problem:
       'Growing businesses often run on spreadsheets exported from five different tools. Decisions lag behind reality and nobody trusts the numbers.',
@@ -44,7 +44,7 @@ export const solutions: Solution[] = [
     name: 'E-Commerce Solution',
     type: 'Web & Mobile',
     categories: ['Commerce', 'Mobile Apps', 'Web Applications'],
-    image: '/images/case-commerce.webp',
+    image: '/images/work/case-commerce.webp',
     summary: 'Fast storefronts and companion mobile apps with catalogue, checkout, payments and order management built in.',
     problem:
       'Template stores hit a ceiling quickly: slow pages, rigid checkout flows and no room for the custom logistics or pricing rules a growing brand needs.',
@@ -63,7 +63,7 @@ export const solutions: Solution[] = [
     name: 'FinTech App',
     type: 'Mobile Application',
     categories: ['Mobile Apps', 'Enterprise'],
-    image: '/images/case-fintech.webp',
+    image: '/images/work/case-fintech.webp',
     summary: 'Secure money-management experiences with account overviews, transactions, insights and bank-grade security.',
     problem:
       'Financial products must feel effortless while meeting strict security, compliance and reliability expectations — a hard balance to strike.',
@@ -82,7 +82,7 @@ export const solutions: Solution[] = [
     name: 'Healthcare Portal',
     type: 'Web Application',
     categories: ['Web Applications', 'Enterprise'],
-    image: '/images/case-health.webp',
+    image: '/images/work/case-health.webp',
     summary: 'Patient and clinic portals for appointments, health records, vitals tracking and secure communication.',
     problem:
       'Clinics juggle phone bookings, paper records and disconnected systems, while patients expect the convenience of any modern app.',

@@ -1,0 +1,131 @@
+/* Overlays that sit above every page: the free-quote pop-up and the WhatsApp button. */
+
+/* ------------------------------------------------------- Quote pop-up */
+body.dialog-open { overflow: hidden; }
+
+.qp {
+  width: min(1120px, calc(100vw - 32px));
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  overflow: visible;
+}
+.qp[open] { animation: qp-in 0.5s var(--ease-out); }
+.qp::backdrop { background: rgba(10, 10, 12, 0.74); }
+@keyframes qp-in { from { opacity: 0; transform: translateY(24px) scale(0.98); } to { opacity: 1; transform: none; } }
+
+.qp-panel {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  max-height: calc(100dvh - 32px);
+  background: var(--paper);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 50px 120px -40px rgba(0, 0, 0, 0.7);
+}
+.qp-panel::before { content: ""; position: absolute; inset: 0 0 auto; height: 3px; z-index: 2; background: var(--gradient); background-size: 200% 100%; animation: hue 8s linear infinite; }
+
+.qp-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 50%;
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.3s var(--ease), color 0.3s var(--ease), transform 0.4s var(--ease-out);
+}
+.qp-close:hover { background: var(--ink); color: var(--on-ink); transform: rotate(90deg); }
+
+.qp-side {
+  display: grid;
+  align-content: space-between;
+  gap: 32px;
+  min-width: 0;
+  padding: clamp(32px, 4vw, 52px);
+  background: var(--ink);
+  color: var(--on-ink);
+}
+.qp-side .index-label { color: var(--on-ink-muted); }
+.qp-main { min-width: 0; padding: clamp(28px, 3.6vw, 48px); overflow-y: auto; overscroll-behavior: contain; }
+
+.qp-head { display: grid; gap: 10px; padding-right: 52px; padding-bottom: 18px; margin-bottom: 4px; border-bottom: 1px solid var(--rule); }
+.qp-head h2 { font-size: clamp(2rem, 3.4vw, 2.9rem); }
+.qp-head p { font-size: 14px; line-height: 1.5; color: var(--on-paper-muted); }
+
+/* Slider: a translating track of full-width slides. */
+.qp-slider { overflow: hidden; }
+.qp-track { --qp-gap: 48px; display: flex; gap: var(--qp-gap); transition: transform 0.7s var(--ease-out); }
+.qp-slide { flex: 0 0 100%; display: grid; gap: 18px; align-content: start; margin: 0; }
+.qp-slide > svg { color: var(--g-cyan); }
+.qp-slide blockquote { margin: 0; font-family: var(--font-accent), Georgia, serif; font-style: italic; font-size: clamp(1.3rem, 2.1vw, 1.75rem); line-height: 1.32; color: var(--on-ink); }
+.qp-slide figcaption { display: grid; gap: 4px; }
+.qp-slide figcaption strong { font-size: 15px; font-weight: 700; }
+.qp-slide figcaption .mono { color: var(--on-ink-muted); }
+.qp-controls { display: flex; align-items: center; gap: 12px; margin-top: 26px; }
+.qp-controls .icon-btn { width: 44px; height: 44px; border-color: var(--rule-ink); color: var(--on-ink); }
+.qp-dots { display: flex; gap: 2px; }
+.qp-dots button { position: relative; width: 26px; height: 26px; padding: 0; border: 0; background: none; cursor: pointer; }
+.qp-dots button::after { content: ""; position: absolute; inset: 11px 3px; border-radius: 2px; background: var(--rule-ink); transition: background 0.3s var(--ease); }
+.qp-dots button[aria-current="true"]::after { background: var(--gradient); }
+
+.qp-assure { display: grid; gap: 10px; list-style: none; margin: 0; padding: 22px 0 0; border-top: 1px solid var(--rule-ink); }
+.qp-assure li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; line-height: 1.45; }
+.qp-assure svg { flex: 0 0 auto; margin-top: 2px; color: var(--g-cyan); }
+
+.qp-trust { display: grid; gap: 14px; }
+.qp-trust .mono { color: var(--on-ink-muted); }
+.qp-trust ul { display: flex; flex-wrap: wrap; align-items: center; gap: 22px; list-style: none; margin: 0; padding: 0; }
+.qp-trust svg { display: block; width: 26px; height: 26px; fill: var(--on-ink); opacity: 0.82; }
+
+/* Phones: a full-screen sheet. The form comes first; the slider and trust marks follow below it. */
+@media (max-width: 760px) {
+  .qp { width: 100vw; max-height: 100dvh; height: 100dvh; margin: 0; }
+  .qp-panel { display: flex; flex-direction: column; height: 100dvh; max-height: 100dvh; border-radius: 0; overflow-y: auto; overscroll-behavior: contain; }
+  .qp-main { order: 1; overflow: visible; padding: 26px 18px 30px; }
+  .qp-side { order: 2; gap: 26px; padding: 30px 18px calc(30px + env(safe-area-inset-bottom)); }
+  .qp-close { position: fixed; top: 10px; right: 10px; }
+  .qp-head { padding-right: 48px; }
+  .qp-head h2 { font-size: 2rem; }
+}
+
+/* -------------------------------------------------- WhatsApp button */
+.wa-widget {
+  position: fixed;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 56px;
+  padding: 0 20px 0 16px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #25d366;
+  box-shadow: 0 16px 36px -14px rgba(10, 10, 12, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  transition: transform 0.4s var(--ease-out);
+}
+.wa-widget:hover { transform: translateY(-3px); }
+.wa-widget-label { font-size: 14px; font-weight: 600; color: var(--on-ink); }
+body.menu-open .wa-widget, body.dialog-open .wa-widget { display: none; }
+
+@media (max-width: 620px) {
+  .wa-widget { width: 56px; padding: 0; justify-content: center; }
+  .wa-widget-label { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qp-track { transition: none; }
+}

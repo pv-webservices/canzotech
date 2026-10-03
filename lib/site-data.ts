@@ -12,12 +12,21 @@ export type Service = {
 
 export const company = {
   name: 'CanzoTech',
-  email: 'canzotech@gmail.com',
-  mobile: '7651850667',
+  legalName: 'CanzoTech',
+  /** Primary inbox shown first everywhere and used as the sender of website enquiries. */
+  email: 'info@canzotech.com',
+  /** Every business address published on the site; website enquiries are delivered to all of them (MAIL_TO). */
+  emails: ['info@canzotech.com', 'vishwajit@canzotech.com', 'sunita.ku@canzotech.com'],
+  mobile: '+91 76518 50667',
+  mobileHref: 'tel:+917651850667',
   phoneE164: '+91-7651850667', // international format for structured data
-  landline: 'LN-012029644430',
-  linkedin: 'https://www.linkedin.com/company/canzotech/home/',
-  location: 'BSI Business Park H161 Sector 63 Noida',
+  /** WhatsApp number in wa.me format: country code + number, digits only. */
+  whatsapp: '917651850667',
+  landline: '0120 2964 4430',
+  landlineHref: 'tel:012029644430',
+  linkedin: 'https://www.linkedin.com/company/canzotech/about/',
+  instagram: 'https://www.instagram.com/canzotech/',
+  location: 'BSI Business Park, H-161, Sector 63, Noida',
   // Structured address for schema.org; keep in sync with `location`.
   streetAddress: 'BSI Business Park, H-161, Sector 63',
   city: 'Noida',
@@ -26,6 +35,17 @@ export const company = {
   description:
     'CanzoTech designs and develops scalable software products for operational, customer-facing and growth-critical business needs.',
 };
+
+/** Pre-filled WhatsApp chat link. */
+export function whatsappLink(text = 'Hi CanzoTech, I would like to discuss a project.') {
+  return `https://wa.me/${company.whatsapp}?text=${encodeURIComponent(text)}`;
+}
+
+/** Social profiles, used for footer/contact links and schema.org `sameAs`. */
+export const socials = [
+  { label: 'LinkedIn', href: company.linkedin, icon: 'linkedin' },
+  { label: 'Instagram', href: company.instagram, icon: 'instagram' },
+] as const;
 
 export const navigation = [
   { label: 'Home', href: '/' },

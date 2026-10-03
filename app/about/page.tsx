@@ -3,6 +3,8 @@ import Image from 'next/image';
 import { Action } from '@/components/Action';
 import { CtaBand } from '@/components/CtaBand';
 import { PageIntro } from '@/components/PageIntro';
+import { PhotoFigure } from '@/components/PhotoFigure';
+import { photos } from '@/lib/photos';
 import { stats } from '@/lib/site-data';
 import { pageMetadata } from '@/lib/seo';
 
@@ -52,11 +54,12 @@ export default function AboutPage() {
       <figure className="page-figure">
         <div className="page-figure-frame">
           <Image
-            src="/images/hero-bw.webp"
+            src="/images/editorial/hero-bw.webp"
             alt="The CanzoTech team working together"
             width={1264}
             height={848}
             priority
+            fetchPriority="high"
             sizes="100vw"
             data-parallax="-0.04"
           />
@@ -71,12 +74,19 @@ export default function AboutPage() {
           </span>
           <div className="col-copy">
             <h2 className="display display-l" data-reveal="mask">
-              We are a product-minded engineering team — fewer status decks, more working software.
+              A synergy of creative minds and <em>cutting-edge technology.</em>
             </h2>
             <p className="lede" data-reveal="up">
-              Every engagement starts the same way: understand the business, the people who will use the product and the
-              constraints around it. Only then do we choose the technology. It is a slower start and a much faster finish.
+              We are a product-minded engineering team — fewer status decks, more working software. Every engagement
+              starts the same way: understand the business, the people who will use the product and the constraints
+              around it. Only then do we choose the technology. It is a slower start and a much faster finish.
             </p>
+            <PhotoFigure
+              photo={photos.teamCollaboration}
+              sizes="(max-width: 760px) 92vw, 712px"
+              caption="Fig. 02 — Designers and engineers reviewing work together"
+              className="photo-contained"
+            />
           </div>
         </div>
       </section>
@@ -136,6 +146,12 @@ export default function AboutPage() {
                 </div>
               ))}
             </div>
+            <PhotoFigure
+              photo={photos.conferenceRoom}
+              sizes="(max-width: 760px) 92vw, (max-width: 1440px) 70vw, 1000px"
+              caption="Fig. 03 — A working session at CanzoTech"
+              className="photo-wide"
+            />
           </div>
         </div>
       </section>

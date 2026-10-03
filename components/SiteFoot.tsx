@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import { Brand } from './Brand';
 import { Action } from './Action';
-import { company, services } from '@/lib/site-data';
+import { ContactDetails } from './ContactDetails';
+import { services } from '@/lib/site-data';
 import { solutions } from '@/lib/solutions';
 
 export function SiteFoot() {
@@ -35,17 +36,9 @@ export function SiteFoot() {
             ))}
           </div>
 
-          <div className="foot-col">
-            <span className="mono">Contact &amp; Social</span>
-            <a href={`mailto:${company.email}`}>{company.email}</a>
-            {company.mobile && <a href={`tel:${company.mobile}`}>Mob: {company.mobile}</a>}
-            {company.landline && <span>LN: {company.landline}</span>}
-            {company.linkedin && (
-              <a href={company.linkedin} target="_blank" rel="noopener noreferrer">
-                LinkedIn ↗
-              </a>
-            )}
-            {company.location && <span style={{ fontSize: '13.5px', opacity: 0.78, marginTop: '4px' }}>📍 {company.location}</span>}
+          <div className="foot-col foot-contact">
+            <span className="mono">Contact &amp; social</span>
+            <ContactDetails tone="ink" />
           </div>
         </div>
 

@@ -2,7 +2,11 @@ node_modules
 .next
 out
 .env*
+!.env.example
 .DS_Store
 *.log
 *.zip
 tsconfig.tsbuildinfo
+test-results
+playwright-report
+reports/lighthouse/*.html

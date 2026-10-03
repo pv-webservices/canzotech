@@ -35,7 +35,8 @@ export function pageMetadata({ title, description, path, image = DEFAULT_OG_IMAG
   return {
     title,
     description,
-    alternates: { canonical: path },
+    // noindex pages get no canonical: the two signals would contradict each other.
+    ...(noIndex ? {} : { alternates: { canonical: path } }),
     openGraph: {
       type: 'website',
       siteName: SITE_NAME,

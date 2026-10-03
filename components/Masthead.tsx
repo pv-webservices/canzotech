@@ -4,8 +4,9 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Brand } from './Brand';
+import { ContactDetails } from './ContactDetails';
 import { Icon } from './Icon';
-import { company, navigation, services } from '@/lib/site-data';
+import { navigation, services } from '@/lib/site-data';
 
 export function Masthead() {
   const [open, setOpen] = useState(false);
@@ -135,29 +136,7 @@ export function Masthead() {
 
             <div className="sheet-foot">
               <span className="mono">Get in touch</span>
-              <a className="display display-s" href={`mailto:${company.email}`}>
-                {company.email}
-              </a>
-              {company.mobile && (
-                <a className="mono" href={`tel:${company.mobile}`} style={{ color: 'var(--on-ink)' }}>
-                  Mob: {company.mobile}
-                </a>
-              )}
-              {company.landline && (
-                <span className="mono" style={{ color: 'var(--on-ink-muted)' }}>
-                  LN: {company.landline}
-                </span>
-              )}
-              {company.linkedin && (
-                <a className="mono" href={company.linkedin} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--on-ink)' }}>
-                  LinkedIn ↗
-                </a>
-              )}
-              {company.location && (
-                <span className="mono" style={{ color: 'var(--on-ink-muted)', fontSize: '12px' }}>
-                  📍 {company.location}
-                </span>
-              )}
+              <ContactDetails tone="paper" />
               <Link className="btn btn-solid" href="/contact">
                 <span>Start a project</span>
                 <Icon name="arrowUpRight" size={14} />

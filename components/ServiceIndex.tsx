@@ -7,15 +7,15 @@ import type { Service } from '@/lib/site-data';
 import { Icon } from './Icon';
 
 const previews: Record<string, string> = {
-  'custom-software-development': '/images/keys-bw.webp',
-  'web-development': '/images/case-saas.webp',
-  'mobile-app-development': '/images/case-fintech.webp',
-  'ai-automation': '/images/architecture-sketch.webp',
-  'cloud-devops': '/images/hero-bw.webp',
-  'ui-ux-design': '/images/designer-whiteboard.webp',
-  'qa-testing': '/images/case-health.webp',
-  'cyber-security': '/images/hero-studio.webp',
-  'technology-consulting': '/images/team-bw.webp',
+  'custom-software-development': '/images/editorial/keys-bw.webp',
+  'web-development': '/images/work/case-saas.webp',
+  'mobile-app-development': '/images/work/case-fintech.webp',
+  'ai-automation': '/images/editorial/architecture-sketch.webp',
+  'cloud-devops': '/images/editorial/hero-bw.webp',
+  'ui-ux-design': '/images/editorial/designer-whiteboard.webp',
+  'qa-testing': '/images/work/case-health.webp',
+  'cyber-security': '/images/editorial/hero-studio.webp',
+  'technology-consulting': '/images/editorial/team-bw.webp',
 };
 
 /**
@@ -73,7 +73,7 @@ export function ServiceIndex({ services }: { services: Service[] }) {
         {armed && services.map((service) => (
           <Image
             key={service.slug}
-            src={previews[service.slug] ?? '/images/keys-bw.webp'}
+            src={previews[service.slug] ?? '/images/editorial/keys-bw.webp'}
             alt=""
             width={520}
             height={390}

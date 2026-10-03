@@ -9,7 +9,55 @@ npm install
 npm run dev
 ```
 
-Then open `http://localhost:3000`.
+Then open `http://localhost:3000`. To test the enquiry form locally, copy `.env.example` to `.env.local` and fill in
+the Zoho SMTP values (never commit `.env.local`).
+
+## Commands
+
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Development server on port 3000 |
+| `npm run build` / `npm start` | Production build / serve it (what Hostinger runs) |
+| `npm run typecheck` | TypeScript check (`tsc --noEmit`) |
+| `npm test` | Unit tests (`tests/*.test.ts`, Node's built-in runner): validation and the enquiry handler with a mocked mail transport |
+| `npm run audit:seo` | After a build: crawls every page and checks titles, descriptions, headings, alt text, canonicals, robots, Open Graph, JSON-LD, favicons, broken links, robots.txt and the sitemap. Fails on any issue |
+| `npm run test:e2e` | After a build: Playwright browser tests using the installed Chrome. Form flows (endpoint intercepted, nothing sent), quote pop-up, axe WCAG 2.1 AA on every page, keyboard, reduced motion, layout at 320–1440px, console errors, broken images |
+| `npm run verify` | All of the above, in order |
+| `npm run images` | Rebuilds `public/images/team/*.webp` from the masters in `source-files/` |
+| `npm run icons` | Rebuilds every favicon and app icon from the brand mark |
+
+## Folder structure
+
+```
+app/                 Routes (App Router), global CSS, robots.ts, sitemap.ts, OG images
+  api/enquiry/       POST endpoint for both enquiry forms (sends through Zoho SMTP)
+  thank-you/         Post-submit page (noindex)
+components/          UI (EnquiryForm, QuotePopup, ContactDetails, WhatsAppWidget, ...)
+lib/                 Content and logic: site-data, solutions, testimonials, photos, seo, validation
+  server/            Server-only enquiry handler, email builder, rate limiter
+public/              Served as-is from the site root
+  images/brand/      Logo and mark
+  images/editorial/  Black-and-white editorial imagery
+  images/team/       Real team and office photos (generated web copies)
+  images/work/       Solution blueprint visuals
+  favicon.*, icon-*.png, apple-touch-icon.png, site.webmanifest
+source-files/        Full-resolution photo masters (never deployed)
+scripts/             audit-seo, optimize-images, generate-icons
+tests/               Unit tests
+e2e/                 Browser tests (Playwright)
+docs/                CONTENT_CHECKLIST.md, GOOGLE-SEARCH-CONSOLE.md
+```
+
+## Deploy (Hostinger, Node.js web app)
+
+The live site runs as a Next.js Node.js application on Hostinger (LiteSpeed proxies to `next start`). Redirects
+(apex to `www`, `/index.html` to `/`, trailing slash) and the security and caching headers are in `next.config.ts`;
+Hostinger already redirects HTTP to HTTPS.
+
+1. Push to the deployed branch (or upload the project) and let Hostinger run `npm install` and `npm run build`.
+2. Environment variables (hPanel > Websites > canzotech.com > Node.js > Environment variables): `SMTP_HOST`,
+   `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `MAIL_TO`, `MAIL_FROM` (see `.env.example`). Redeploy after changing them.
+3. Check the live site with the commands in `docs/GOOGLE-SEARCH-CONSOLE.md` section 1.
 
 ## Design language
 
@@ -69,7 +117,7 @@ top for desktop. (It replaced an earlier scroll-pinned implementation that did n
 ## Routes
 
 `/`, `/about`, `/services` + 9 service pages, `/work` + 4 project pages, `/careers`, `/contact`,
-`/privacy-policy`, `/terms`, plus `sitemap.xml`, `robots.txt` and `manifest.webmanifest`. There is no blog.
+`/privacy-policy`, `/terms`, `/thank-you`, the `/api/enquiry` endpoint, plus `sitemap.xml` and `robots.txt`. There is no blog.
 
 Unknown URLs, including unknown service or project slugs (`dynamicParams = false`), render `app/not-found.tsx`
 with a real 404 status. Runtime failures render `app/error.tsx`, or `app/global-error.tsx` if the root layout
@@ -90,9 +138,10 @@ Editable content lives in `lib/site-data.ts` (company, navigation, services, sta
 - **Indexing**: `/privacy-policy` and `/terms` are `noindex, follow` and left out of the sitemap, and error pages
   are noindex. Every other page is in `app/sitemap.ts`. To index the legal pages, remove `noIndex` and add them
   back to the sitemap.
-- **Icons**: `app/favicon.ico`, `app/icon.png` and `app/apple-icon.png` are generated from the brand mark.
+- **Icons**: `public/favicon.ico` (16/32/48), `favicon.svg`, 48/96/192/512 px PNGs and `apple-touch-icon.png`,
+  generated from the brand mark by `npm run icons` and linked from every page, plus `public/site.webmanifest`.
 
-After launch, verify the domain in Google Search Console and submit `https://www.canzotech.com/sitemap.xml`.
+See `docs/GOOGLE-SEARCH-CONSOLE.md` for the launch and indexing steps.
 
 ## Tests
 
@@ -105,11 +154,12 @@ packages are needed.
 
 ## Images
 
-`public/images/*.webp` were generated for this build and optimised to WebP (36–160 KB each). The people and
-environment shots are black and white so the brand gradient is the only colour on the page; the project shots
-are neutral product photography, rendered greyscale until hovered.
+`public/images/editorial/` and `public/images/work/` were generated for this build (WebP, 36-160 KB each).
+`public/images/team/` holds real CanzoTech photos, cropped and compressed from the masters in `source-files/` by
+`npm run images` (15-52 KB each). Photos render greyscale and return to colour on hover; `next/image` serves
+AVIF/WebP at responsive sizes with explicit dimensions.
 
-`public/canzotech-mark.webp` is the brand symbol extracted from the supplied logo; the header and footer pair
+`public/images/brand/canzotech-mark.webp` is the brand symbol extracted from the supplied logo; the header and footer pair
 it with a live wordmark whose "Tech" carries the gradient, so it works on white and black.
 
 There are no videos on the site, and none were generated.
@@ -119,23 +169,35 @@ There are no videos on the site, and none were generated.
 The site does not invent client logos, testimonials, project results, office addresses or business statistics:
 
 - The logo rail shows the technology we build with (official marks from simple-icons), not client logos.
-- The testimonial slot publishes CanzoTech's own delivery commitments until approved client quotes exist.
+- The pop-up slider publishes only testimonials marked `approved` in `lib/testimonials.ts`; until then it shows
+  CanzoTech's own delivery commitments.
 - The stat rows describe the delivery model, not client counts.
 - Our Work shows clearly labelled solution blueprints with concept visuals, not claimed client deployments.
 
-See `CONTENT_CHECKLIST.md` for what to swap in before launch.
+See `docs/CONTENT_CHECKLIST.md` for what to swap in before launch.
 
-## Contact form
+## Contact form and quote pop-up
 
-The rules live in `lib/enquiry-validation.ts`:
+Both forms are `components/EnquiryForm.tsx` and post to our own endpoint, `app/api/enquiry/route.ts`, which sends
+the email **through CanzoTech's own Zoho mailbox over SMTP** (`smtp.zoho.in:465`). No third-party form service is
+involved, so the email passes SPF/DKIM/DMARC and lands in the inbox.
 
-- Name, email and project details are required.
-- Every field has a length limit, and the phone number format is checked.
-- Project details may contain at most 3 links.
+- **Email**: From `"Visitor Name via CanzoTech Website" <info@canzotech.com>`, Reply-To the visitor, sent to every
+  address in `MAIL_TO`. Subject `New enquiry from {Name}: {Service or "Free quote request"}`. Branded HTML table plus
+  plain text, with the form type, all fields, the source page and the submission time (IST).
+- **Progressive enhancement**: without JavaScript the form is a normal POST answered with a 303 to `/thank-you`. With
+  JavaScript it validates inline, posts JSON with a 20-second timeout, then navigates to `/thank-you`.
+- **Required**: name, email, phone (10-15 digits including the country code; 10 for India), message (20+ characters)
+  and privacy consent. Errors are linked to their fields (`aria-describedby`, `aria-invalid`) and focus moves to the
+  first one.
+- **Never loses data**: offline, timeout and delivery-failure messages keep every value and offer phone, WhatsApp and
+  email; a draft is also kept in session storage for the tab.
+- **Spam protection (server side)**: honeypot and 3-second time trap (silently accepted and discarded), origin
+  allow-list, 5 requests per IP per 10 minutes, full validation, CR/LF stripped from headers, HTML-escaped body,
+  suspicious keywords flagged as `[Possible spam]` in the subject rather than dropped.
+- **Errors**: missing SMTP configuration returns 500 and an SMTP failure 502, both with a visitor-friendly fallback.
 
-Spam checks: a hidden honeypot field and a 3-second time trap both drop a submission silently.
-`components/ContactForm.tsx` shows errors beside each field, focuses the first invalid one, and blocks a repeat
-send for 60 seconds. `lib/enquiry.ts` also passes a phrase blacklist to FormSubmit, which filters server side,
-and sends the enquiry through
-[FormSubmit](https://formsubmit.co)'s AJAX endpoint to `company.email` (`canzotech@gmail.com`). The very first
-submission sends an "Activate Form" email to that inbox; enquiries are only delivered once the link is clicked.
+The **quote pop-up** (`QuotePopupLoader` then `QuotePopup`) opens once per browser session, 5 seconds after landing
+(not on `/contact`, `/thank-you` or the legal pages). Its code is downloaded only when it opens. The left panel slides
+through approved client testimonials from `lib/testimonials.ts`; until one is approved it shows the published delivery
+commitments instead.

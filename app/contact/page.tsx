@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ContactForm } from '@/components/ContactForm';
+import { ContactDetails } from '@/components/ContactDetails';
+import { EnquiryForm } from '@/components/EnquiryForm';
 import { PageIntro } from '@/components/PageIntro';
-import { company, services } from '@/lib/site-data';
+import { services } from '@/lib/site-data';
 import { pageMetadata } from '@/lib/seo';
 
 export const metadata: Metadata = pageMetadata({
@@ -33,45 +34,8 @@ export default function ContactPage() {
         crumbs={[{ label: 'Contact' }]}
         aside={
           <div className="intro-stack">
-            <span className="mono">Direct Contact</span>
-            <div className="contact-detail-block">
-              <span className="mono contact-detail-label">Email</span>
-              <a className="display display-s contact-link" href={`mailto:${company.email}`}>
-                {company.email}
-              </a>
-            </div>
-            {company.mobile && (
-              <div className="contact-detail-block">
-                <span className="mono contact-detail-label">Mobile</span>
-                <a className="display display-s contact-link" href={`tel:${company.mobile}`}>
-                  {company.mobile}
-                </a>
-              </div>
-            )}
-            {company.landline && (
-              <div className="contact-detail-block">
-                <span className="mono contact-detail-label">Landline</span>
-                <span className="display display-s contact-text">
-                  {company.landline}
-                </span>
-              </div>
-            )}
-            {company.location && (
-              <div className="contact-detail-block">
-                <span className="mono contact-detail-label">Office Address</span>
-                <span className="display display-s contact-text">
-                  {company.location}
-                </span>
-              </div>
-            )}
-            {company.linkedin && (
-              <div className="contact-detail-block">
-                <span className="mono contact-detail-label">LinkedIn</span>
-                <a className="display display-s contact-link" href={company.linkedin} target="_blank" rel="noopener noreferrer">
-                  CanzoTech Profile ↗
-                </a>
-              </div>
-            )}
+            <span className="mono">Direct contact</span>
+            <ContactDetails />
           </div>
         }
       />
@@ -108,7 +72,7 @@ export default function ContactPage() {
           </div>
 
           <div id="form" className="contact-form-wrap" data-reveal="up">
-            <ContactForm />
+            <EnquiryForm formType="contact" />
           </div>
         </div>
       </section>

@@ -5,12 +5,13 @@ CanzoTech material, and each one is a small edit in `lib/`.
 
 ## Content to supply
 
-1. **Contact details** — set `company.phone` and `company.location` in `lib/site-data.ts`.
-   Both are hidden everywhere until filled, so nothing breaks while they are empty.
+1. **Contact details** — `company` in `lib/site-data.ts` (emails, mobile, landline, WhatsApp, LinkedIn, Instagram,
+   address). Confirm the landline 0120 2964 4430: as supplied it has one digit more than a standard Noida number.
 2. **Client logos** — the logo rail shows the technology stack (`lib/tech-logos.ts`), standing in for a client
    logo row. Only publish real client marks with written permission.
-3. **Testimonials** — the "What working with us actually looks like" list uses `commitments`. Replace it with
-   approved client quotes (name, role, company) when available.
+3. **Testimonials** — `lib/testimonials.ts` holds three DRAFT quotes for the pop-up slider. Replace each with a real
+   client's words, name, role and company (with written permission), then set `approved: true`. Unapproved entries
+   are never shown.
 4. **Business statistics** — `stats` describes the delivery model. Swap in verified numbers
    (projects delivered, clients, years, retention) once CanzoTech can substantiate them.
 5. **Case studies** — `lib/solutions.ts` holds labelled *solution blueprints* with concept visuals.
@@ -25,9 +26,12 @@ CanzoTech material, and each one is a small edit in `lib/`.
 10. **Structured address**: the search-engine address comes from `company` in `lib/site-data.ts`
     (street, city, region, postal code `201301`). Confirm the postal code.
 
+11. **Team photos** — confirm the photos in `source-files/images/team/` are CanzoTech's own and that the company holds
+    the rights (two arrived with third-party overlays, which were cropped off).
+
 ## Before going live
 
-- Activate FormSubmit: submit the contact form once from the live site, then click "Activate Form" in the email sent to canzotech@gmail.com.
+- Set the Zoho SMTP environment variables on Hostinger (see `.env.example`) and send one test enquiry from the live site.
 - Confirm the imagery on Our Work is understood as illustrative; `/terms` already states this.
 - Re-run `npm test` and `npm run build`, then check `/sitemap.xml` and `/robots.txt`.
 - Verify the domain in Google Search Console, submit the sitemap and request indexing for the homepage.

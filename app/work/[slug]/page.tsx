@@ -82,6 +82,7 @@ export default async function SolutionPage({ params }: { params: Promise<{ slug:
             width={1200}
             height={896}
             priority
+            fetchPriority="high"
             sizes="100vw"
             data-parallax="-0.04"
           />

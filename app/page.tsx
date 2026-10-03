@@ -40,7 +40,7 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════════════════ Stage / hero */}
       <section className="stage">
         <div className="stage-bg" aria-hidden="true">
-          <Image src="/images/ribbon-bw.webp" alt="" fill priority sizes="100vw" className="stage-ribbon" />
+          <Image src="/images/editorial/ribbon-bw.webp" alt="" fill priority fetchPriority="high" sizes="100vw" className="stage-ribbon" />
           <span className="stage-tint" />
           <span className="stage-grid" />
         </div>
@@ -102,11 +102,10 @@ export default function HomePage() {
       <section className="reveal-panel band-ink" data-scrub>
         <figure className="reveal-figure">
           <Image
-            src="/images/hero-bw.webp"
+            src="/images/editorial/hero-bw.webp"
             alt="CanzoTech engineers working together"
             width={1264}
             height={848}
-            priority
             sizes="100vw"
           />
         </figure>
@@ -139,10 +138,10 @@ export default function HomePage() {
 
           <div className="studio-media">
             <figure className="studio-shot shot-a" data-parallax="0.06" data-reveal="right">
-              <Image src="/images/team-bw.webp" alt="The CanzoTech team in discussion" width={1264} height={848} sizes="(max-width: 1000px) 88vw, 460px" />
+              <Image src="/images/editorial/team-bw.webp" alt="The CanzoTech team in discussion" width={1264} height={848} sizes="(max-width: 1000px) 88vw, 460px" />
             </figure>
             <figure className="studio-shot shot-b" data-parallax="-0.09" data-reveal="up">
-              <Image src="/images/keys-bw.webp" alt="Hands typing on a keyboard" width={1200} height={896} sizes="(max-width: 1000px) 52vw, 260px" />
+              <Image src="/images/editorial/keys-bw.webp" alt="Hands typing on a keyboard" width={1200} height={896} sizes="(max-width: 1000px) 52vw, 260px" />
             </figure>
           </div>
         </div>
@@ -240,9 +239,9 @@ export default function HomePage() {
         </div>
 
         <Rail label="Selected work">
-          {solutions.map((solution, index) => (
+          {solutions.map((solution) => (
             <div className="rail-slide" key={solution.slug}>
-              <CaseCard solution={solution} priority={index === 0} />
+              <CaseCard solution={solution} />
             </div>
           ))}
           <div className="rail-slide">
